@@ -7,7 +7,7 @@ format: html
 library(dplyr)
 
 # Read in data 
-Serengeti <- read.csv("S1-11_filtered.csv")
+Serengeti <- read.csv("https://github.com/ocelots-rcn/quarto-serengeti/raw/4b0d01466d8361cdf70d9390c03d04754ca09a07/S1-11_filtered.csv")
 
 # Generate master species list
 speciesList <- as.list(Serengeti %>% distinct(Species))
