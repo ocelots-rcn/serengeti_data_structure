@@ -33,6 +33,11 @@ species_filt = aq.table(serengeti)
 ## Obs. by Species
 
 ```{ojs}
+//| echo: false
+import {rasterize} from "@mbostock/saving-svg"
+```
+
+```{ojs}
 //| code-fold: true
 
 spec_counts = species_filt
@@ -42,7 +47,7 @@ spec_counts = species_filt
   })
   .orderby('Species')
 
-Plot.plot({
+chart1 = Plot.plot({
   marks: [
     Plot.barY(spec_counts, {x: "Species", y: "count"})
   ],
@@ -51,6 +56,8 @@ Plot.plot({
   marginBottom: 100, 
   x: { tickRotate: 90 }
 })
+
+DOM.download(() => rasterize(chart1), undefined, "Save as PNG")
 ```
 
 ## Obs. by Camera
@@ -64,7 +71,7 @@ cam_counts = species_filt
     Freq: d => op.count()
   })
 
-Plot.plot({
+chart2 = Plot.plot({
   x: { label: "Number of Images Captured", domain: [0, 4700] },
   y: { label: "Number of Camera Sites", domain: [0, 50] },
   marks: [
@@ -75,6 +82,8 @@ Plot.plot({
   width: 786,
   marginLeft: 75
 })
+
+DOM.download(() => rasterize(chart2), undefined, "Save as PNG")
 ```
 
 ## Obs. by Location
@@ -89,7 +98,7 @@ ll_counts = species_filt
   })
   .join_left(aq.table(camData))
 
-Plot.plot({
+chart3 = Plot.plot({
   x: {
     label: "Longitude (m)",
     domain: [690000, 745000]
@@ -104,6 +113,8 @@ Plot.plot({
   width: 786,
   marginLeft: 75
 })
+
+DOM.download(() => rasterize(chart3), undefined, "Save as PNG")
 ```
 
 :::
