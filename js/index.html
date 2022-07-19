@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+  <script src="./includes/axios.min.js" ></script>
+  <script src="./includes/plotly-2.12.1.min.js" ></script>
+  <script src="./includes/slimselect.min.js"></script>
+  <link href="./includes/slimselect.min.css" rel="stylesheet">
+
+  <script>
+    const switchTab = (el) => {
+        let tabParent = el.parentElement;
+        let tabName = el.getAttribute("name");
+
+        // Cycle through tabs to change look
+        for (let child of tabParent.children) {
+            el == child ? child.style['background-color'] = '#EEE' : child.style['background-color'] = '#FFF';
+        };
+
+        // Cycle through content divs
+        for (let child of tabParent.parentElement.children) {
+            if(child.getAttribute("name") !== 'tabs') {
+                let divName = child.getAttribute("name");
+                
+                if(child.id.includes('Plot')) {
+                    if(tabName == divName){
+                        child.style.visibility = 'hidden';
+                        child.style.display = 'block';
+                        Plotly.Plots.resize(child.id).then(() => {
+                            child.style.visibility = 'visible';
+                        });
+                    }
+                    else {
+                        child.style.display = 'none';
+                    }
+                }
+                else {
+                    tabName == divName ? child.style.display = 'block' : child.style.display = 'none';
+                }
+            }
+        };
+    }
+  </script>
+</head>
+
+<body >
+    <div style="display: flex;flex-direction: row;">
+        <div style="width: 250px;padding: 5px">
+            <div name="tabs" style="display: flex;flex-direction: row;margin-bottom: 5px">
+                <div name="overview" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer;background-color: #EEE" onclick="switchTab(this)">Overview</div>
+                <div name="filters" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer" onclick="switchTab(this)">Filters</div>
+            </div>
+            <div name="overview">
+                <p style="font-size: 1.2em">Observations</p>
+                <p>The following graphs and map will allow you to explore the overall observation frequency of each species.</p>
+            </div>
+            <div name="filters" style="display: none">
+                <span style="font-weight: bold">Species</span><br />
+                <select id="ObsSpecies" multiple onChange="obsPlot()"></select><br />
+                <hr>
+                <span style="font-weight: bold">Quick Load</span><br />
+                <input value="Predators" type="button" onClick="obsQuickLoad('predator')" /> <input value="Prey" type="button" onClick="obsQuickLoad('prey')" /> <input value="Other" type="button" onClick="obsQuickLoad('other')" />
+                <hr>
+                <input value="Clear Species List" type="button" onClick="obsClearList()" />
+            </div>
+        </div>
+        <div style="padding: 5px;flex: 1">
+            <div name="tabs" style="display: flex;flex-direction: row;margin-bottom: 5px">
+                <div name="species" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer;background-color: #EEE" onclick="switchTab(this)">Observations by Species</div>
+                <div name="camera" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer" onclick="switchTab(this)">Observations by Camera</div>
+                <div name="location" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer" onclick="switchTab(this)">Observations by Location</div>
+            </div>
+            <div id="ObsSpeciesPlot" name="species" style="min-height: 500px"></div>
+            <div id="ObsCameraPlot" name="camera" style="min-height: 500px;display: none"></div>
+            <div id="ObsLocationPlot" name="location" style="min-height: 500px;display: none">This is the location plot</div>
+        </div>
+    </div>
+
+</body>
+    <script src="./observations.js"></script>
+</html>
