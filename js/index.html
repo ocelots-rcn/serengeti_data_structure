@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <head>
-  <script src="./includes/axios.min.js" ></script>
-  <script src="./includes/plotly-2.12.1.min.js" ></script>
-  <script src="./includes/slimselect.min.js"></script>
-  <link href="./includes/slimselect.min.css" rel="stylesheet">
+    <script src="./includes/axios.min.js" ></script>
+    <script src="./includes/plotly-2.12.1.min.js" ></script>
+    <script src="./includes/slimselect.min.js"></script>
+    <link href="./includes/slimselect.min.css" rel="stylesheet">
 
-  <script>
-    const switchTab = (el) => {
-        let tabParent = el.parentElement;
-        let tabName = el.getAttribute("name");
+    <link rel="stylesheet" href="./includes/leaflet.css" />
+    <script src="./includes/leaflet.js"></script>
 
-        // Cycle through tabs to change look
-        for (let child of tabParent.children) {
-            el == child ? child.style['background-color'] = '#EEE' : child.style['background-color'] = '#FFF';
-        };
+    <script>
+        const switchTab = (el) => {
+            let tabParent = el.parentElement;
+            let tabName = el.getAttribute("name");
 
-        // Cycle through content divs
-        for (let child of tabParent.parentElement.children) {
-            if(child.getAttribute("name") !== 'tabs') {
-                let divName = child.getAttribute("name");
-                
-                if(child.id.includes('Plot')) {
-                    if(tabName == divName){
-                        child.style.visibility = 'hidden';
-                        child.style.display = 'block';
-                        Plotly.Plots.resize(child.id).then(() => {
-                            child.style.visibility = 'visible';
-                        });
+            // Cycle through tabs to change look
+            for (let child of tabParent.children) {
+                el == child ? child.style['background-color'] = '#EEE' : child.style['background-color'] = '#FFF';
+            };
+
+            // Cycle through content divs
+            for (let child of tabParent.parentElement.children) {
+                if(child.getAttribute("name") !== 'tabs') {
+                    let divName = child.getAttribute("name");
+                    
+                    if(child.id.includes('Plot')) {
+                        if(tabName == divName) {
+                            child.style.visibility = 'hidden';
+                            child.style.display = 'block';
+                            Plotly.Plots.resize(child.id).then(() => {
+                                child.style.visibility = 'visible';
+                            });
+                        }
+                        else {
+                            child.style.display = 'none';
+                        }
+                    }
+                    else if(child.id.includes('Map')) {
+                        if(tabName == divName) {
+                            child.style.display = 'block'
+                            // There is no way to get the map object from the 
+                            // div so this may just have to remain hardcoded.
+                            obsMap.invalidateSize();
+                        }
+                        else {
+                            child.style.display = 'none';
+                        }
                     }
                     else {
-                        child.style.display = 'none';
+                        tabName == divName ? child.style.display = 'block' : child.style.display = 'none';
                     }
                 }
-                else {
-                    tabName == divName ? child.style.display = 'block' : child.style.display = 'none';
-                }
-            }
-        };
-    }
-  </script>
+            };
+        }
+    </script>
 </head>
 
 <body >
@@ -70,7 +84,7 @@
             </div>
             <div id="ObsSpeciesPlot" name="species" style="min-height: 500px"></div>
             <div id="ObsCameraPlot" name="camera" style="min-height: 500px;display: none"></div>
-            <div id="ObsLocationPlot" name="location" style="min-height: 500px;display: none">This is the location plot</div>
+            <div id="ObsLocationsMap" name="location" style="min-height: 500px;display: none"></div>
         </div>
     </div>
 
