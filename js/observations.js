@@ -7,7 +7,7 @@ const obsMap = L.map('ObsLocationsMap', {
     zoom: 11
 });
 
-const googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+const googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
     maxZoom: 20,
     subdomains:['mt0','mt1','mt2','mt3']
 }).addTo(obsMap);
@@ -63,10 +63,10 @@ const obsPlot = () => {
     Plotly.newPlot('ObsCameraPlot', [{x: x, y: y, type: 'bar'}], {yaxis: {title: 'Images Camptured'}, xaxis: {title: 'Camera Site'}}, {responsive: true});
 
     obsLayer.clearLayers();
-    let sum = y.reduce((partialSum, a) => partialSum + a, 0);
+    let max = Math.max(...y);
     for(let i = 0; i < x.length; i++){
         let site = obsData.camera_sites[x[i]];
-        let marker = L.circle([site.longitude, site.latitude], {radius: (y[i] / sum ) * 1500, color: 'red', weight: 2})
+        let marker = L.circle([site.longitude, site.latitude], {radius: (y[i] / max ) * 1500, color: 'red', weight: 2})
         marker.bindPopup(`Camera Site: ${x[i]}<br/><br/>Image Count: ${y[i]} `, {
             closeButton: true
           });
