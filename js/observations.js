@@ -66,11 +66,13 @@ const obsPlot = () => {
     let max = Math.max(...y);
     for(let i = 0; i < x.length; i++){
         let site = obsData.camera_sites[x[i]];
-        let marker = L.circle([site.longitude, site.latitude], {radius: (y[i] / max ) * 1500, color: 'red', weight: 2})
-        marker.bindPopup(`Camera Site: ${x[i]}<br/><br/>Image Count: ${y[i]} `, {
-            closeButton: true
-          });
-        obsLayer.addLayer(marker);
+        if(y[i] > 0){
+            let marker = L.circle([site.longitude, site.latitude], {radius: (y[i] / max ) * 1500, color: 'red', weight: 2});
+            marker.bindPopup(`Camera Site: ${x[i]}<br/><br/>Image Count: ${y[i]} `, {
+                closeButton: true
+            });
+            obsLayer.addLayer(marker);
+        }
     }
 }
 
