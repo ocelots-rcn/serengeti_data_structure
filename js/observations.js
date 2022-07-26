@@ -29,8 +29,10 @@ axios.get('../data/observations.json').then((response) => {
         select: '#ObsSpecies'
     });
 
+    obsData.groups['all'] = obsData.groups['predator'].concat(obsData.groups['prey']).concat(obsData.groups['other']);
+
     // Needs a little delay
-    setTimeout(() => {obsSpeciesList.set(obsData.groups['predator'])}, 500);
+    setTimeout(() => {obsSpeciesList.set(obsData.groups['all'])}, 500);
 });
 
 // Update graph when selections changes

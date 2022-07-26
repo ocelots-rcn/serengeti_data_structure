@@ -66,12 +66,19 @@
                 <p style="font-size: 1.2em">Observations</p>
                 <p>The following graphs and map will allow you to explore the overall observation frequency of each species.</p>
             </div>
-            <div name="filters" style="display: none">
+            <div name="filters" style="max-height: 450px;overflow-y: scroll;display: none">
                 <span style="font-weight: bold">Species</span><br />
                 <select id="ObsSpecies" multiple onChange="obsPlot()"></select><br />
                 <hr>
                 <span style="font-weight: bold">Quick Load</span><br />
-                <input value="Predators" type="button" onClick="obsQuickLoad('predator')" /> <input value="Prey" type="button" onClick="obsQuickLoad('prey')" /> <input value="Other" type="button" onClick="obsQuickLoad('other')" />
+                <div>
+                    <input value="Predators" type="button" onClick="obsQuickLoad('predator')" />
+                    <input value="Prey" type="button" onClick="obsQuickLoad('prey')" />
+                </div>
+                <div style="margin-top: 5px">
+                    <input value="Other" type="button" onClick="obsQuickLoad('other')" />
+                    <input value="All Species" type="button" onClick="obsQuickLoad('all')" />    
+                </div>
                 <hr>
                 <input value="Clear Species List" type="button" onClick="obsClearList()" />
             </div>
